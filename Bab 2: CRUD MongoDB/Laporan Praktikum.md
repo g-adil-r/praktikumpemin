@@ -20,7 +20,7 @@
 
 5. Lakukan pencarian buku dengan author "Osamu Dazai" dengan mengisi filter yang diinginkan dan klik "Find"
 
-   <img src="pic/ss05.png" align="center" width=600></img>
+   <img src="pic/ss05.png" style="margin-left:auto; margin-right:auto" width=600></img>
 
 6. Lakukan perubahan summary pada buku "No Longer Human" menjadi "Buku yang bagus (\<NAMA\>,\<NIM\>) dengan melakukan klik "Edit Document" (berlambang pensil), mengisi nilai summary yang baru, dan melakukan klik "Update"
 
@@ -30,3 +30,5 @@
 
    <img src="pic/ss07.png" align="center" width=600></img>
 
+## MongoDB Shell
+1.
