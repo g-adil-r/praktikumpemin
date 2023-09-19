@@ -4,7 +4,9 @@
 ## MongoDB Compass
 1. Lakukan koneksi ke MongoDB menggunakan connection string
    
-   <img src="pic/ss01.png" style="display:block; margin:auto;" width=600></img>
+   <p align="center">
+      <img src="pic/ss01.png" width=600></img>
+   </p>
 
 2. Buat database dengan melakukan klik “Create Database”
    
