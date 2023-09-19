@@ -4,31 +4,31 @@
 ## MongoDB Compass
 1. Lakukan koneksi ke MongoDB menggunakan connection string
    
-   <img src="pic/ss01.png" align="center" width=600></img>
+   <center><img src="pic/ss01.png" width=600></img></center>
 
 2. Buat database dengan melakukan klik “Create Database”
    
-   <img src="pic/ss02.png" align="center" width=600></img>
+   <center><img src="pic/ss02.png" width=600></img></center>
 
 3. Lakukan insert buku pertama dengan melakukan klik "Add Data", pilih "Insert Document", isi dengan data yang diinginkan dan klik "Insert"
    
-   <img src="pic/ss03.png" align="center" width=600></img>
+   <center><img src="pic/ss03.png" width=600></img></center>
 
 4. Lakukan insert buku kedua dengan cara yang sama.
 
-   <img src="pic/ss04.png" align="center" width=600></img>
+   <center><img src="pic/ss04.png" width=600></img></center>
 
 5. Lakukan pencarian buku dengan author "Osamu Dazai" dengan mengisi filter yang diinginkan dan klik "Find"
 
-   <img src="pic/ss05.png" style="margin-left:auto; margin-right:auto" width=600></img>
+   <center><img src="pic/ss05.png" width=600></img></center>
 
 6. Lakukan perubahan summary pada buku "No Longer Human" menjadi "Buku yang bagus (\<NAMA\>,\<NIM\>) dengan melakukan klik "Edit Document" (berlambang pensil), mengisi nilai summary yang baru, dan melakukan klik "Update"
 
-   <img src="pic/ss06.png" align="center" width=600></img>
+   <center><img src="pic/ss06.png" width=600></img></center>
 
 7. Lakukan penghapusan pada buku "I Am a Cat" dengan melakukan klik "Remove Document" (berlambang tong sampah) dan melakukan klik "Delete"
 
-   <img src="pic/ss07.png" align="center" width=600></img>
+   <center><img src="pic/ss07.png" width=600></img></center>
 
 ## MongoDB Shell
 1.
