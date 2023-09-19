@@ -22,10 +22,11 @@
 
    <img src="pic/ss05.png" align="center" width=600></img>
 
-6. Lakukan perubahan summary pada buku "No Longer Human" menjadi "Buku yang bagus (<NAMA>,<NIM>) dengan melakukan klik "Edit Document" (berlambang pensil), mengisi nilai summary yang baru, dan melakukan klik "Update"
+6. Lakukan perubahan summary pada buku "No Longer Human" menjadi "Buku yang bagus (\<NAMA\>,\<NIM\>) dengan melakukan klik "Edit Document" (berlambang pensil), mengisi nilai summary yang baru, dan melakukan klik "Update"
 
    <img src="pic/ss06.png" align="center" width=600></img>
 
 7. Lakukan penghapusan pada buku "I Am a Cat" dengan melakukan klik "Remove Document" (berlambang tong sampah) dan melakukan klik "Delete"
 
    <img src="pic/ss07.png" align="center" width=600></img>
+
