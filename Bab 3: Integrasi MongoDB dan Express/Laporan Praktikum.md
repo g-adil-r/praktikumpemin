@@ -153,7 +153,7 @@
 
    <p align="center">
       <img src="pic/ss4-03.png" width=500></img><br>
-      <i>Gambar 4.3: Menambahkan kode untuk getAllBooks pada file route</i>
+      <i>Gambar 4.3: Menambahkan function getAllBooks pada file route</i>
    </p>
 
 4. Lakukan hal yang sama untuk getOneBook, createBook, updateBook, dan deleteBook
@@ -198,7 +198,7 @@
 
    <p align="center">
       <img src="pic/ss4-04.png" width=500></img><br>
-      <i>Gambar 4.4: Menambahkan kode untuk getOneBook, createBook, updateBook, dan deleteBook pada file route</i>
+      <i>Gambar 4.4: Menambahkan function getOneBook, createBook, updateBook, dan deleteBook pada route</i>
    </p>
 
 5. Lakukan import book.route.js pada file index.js dan tambahkan baris kode berikut
@@ -235,5 +235,128 @@
    
    <p align="center">
       <img src="pic/ss4-06.png" width=500></img><br>
-      <i>Gambar 4.6: Menguji endpoint dengan postman</i>
+      <i>Gambar 4.6: Menguji endpoint dengan Postman</i>
+   </p>
+
+## Pembuatan controller
+1. Lakukan pembuatan direktori controllers di tingkat yang sama dengan index.js
+
+   <p align="center">
+      <img src="pic/ss5-01.png" width=250></img><br>
+      <i>Gambar 5.1: Membuat folder controllers</i>
+   </p>
+
+2. Buatlah file book.controller.js di dalamnya
+
+   <p align="center">
+      <img src="pic/ss5-02.png" width=250></img><br>
+      <i>Gambar 5.2: Membuat file books.controller.js di dalam folder controllers</i>
+   </p>
+
+3. Salin baris kode dari routes untuk fungsi getAllBooks
+
+   ```javascript
+   function getAllBooks(req, res) {
+      res.status(200).json({
+         message: 'mendapatkan semua buku'
+      })
+   };
+
+   module.exports = {
+      getAllBooks,
+   }
+   ```
+
+   <p align="center">
+      <img src="pic/ss5-03.png" width=400></img><br>
+      <i>Gambar 5.3: Menambahkan function getAllBooks pada controller</i>
+   </p>
+
+4. Lakukan hal yang sama untuk getOneBook, createBook, updateBook, dan deleteBook
+   ```javascript
+   ...
+
+   function getOneBook(req, res) {
+      const id = req.params.id;
+      res.status(200).json({
+         message: 'mendapatkan satu buku',
+         id,
+      })
+   }
+
+   function createBook(req, res) {
+      res.status(200).json({
+         message: 'membuat buku baru'
+      })
+   }
+
+   function updateBook(req, res) {
+      const id = req.params.id;
+      res.status(200).json({
+         message: 'memperbaharui satu buku',
+         id,
+      })
+   }
+
+   function deleteBook(req, res) {
+      const id = req.params.id;
+      res.status(200).json({
+         message: 'menghapus satu buku',
+         id,
+      })
+   }
+
+   module.exports = {
+      getAllBooks,
+      getOneBook, 
+      createBook, 
+      updateBook, 
+      deleteBook 
+   }
+   ```
+
+   <p align="center">
+      <img src="pic/ss5-04.png" width=500></img><br>
+      <i>Gambar 5.4: Menambahkan function getOneBook, createBook, updateBook, dan deleteBook pada controller</i>
+   </p>
+
+5. Lakukan import book.controller.js pada file book.route.js
+   ```javascript
+   const router = require('express').Router();
+   const book = require('../controllers/book.controller');
+
+   ...
+
+   module.exports = router;
+   ```
+
+   <p align="center">
+      <img src="pic/ss5-05.png" width=500></img><br>
+      <i>Gambar 5.5: Mengimport controller ke file route</i>
+   </p>
+
+6. Lakukan perubahan pada fungsi agar dapat memanggil fungsi dari book.controller.js
+   ```javascript
+   const router = require('express').Router();
+   const book = require('../controllers/book.controller');
+
+   router.get('/', book.getAllBooks);
+   router.get('/:id', book.getOneBook);
+   router.post('/', book.createBook);
+   router.put('/:id', book.updateBook);
+   router.delete('/:id', book.deleteBook);
+
+   module.exports = router;
+   ```
+
+   <p align="center">
+      <img src="pic/ss5-06.png" width=500></img><br>
+      <i>Gambar 5.6: Menggunakan controller sebagai callback function</i>
+   </p>
+
+7. Lakukan pengujian kembali, pastikan response tetap sama
+
+   <p align="center">
+      <img src="pic/ss5-07.png" width=500></img><br>
+      <i>Gambar 5.7: Menguji ulang endpoint dengan Postman</i>
    </p>
