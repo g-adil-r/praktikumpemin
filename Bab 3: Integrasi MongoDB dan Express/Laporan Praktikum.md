@@ -408,3 +408,220 @@
       <img src="pic/ss6-03.png" width=400></img><br>
       <i>Gambar 6.3: Membuat model untuk book pada file book.model.js</i>
    </p>
+
+## Operasi CRUD
+1. Hapus semua data pada collection books
+
+   <p align="center">
+      <img src="pic/ss7-01.png" width=600></img><br>
+      <i>Gambar 7.1: Menghapus data pada collection books</i>
+   </p>
+
+2. Lakukan import book.model.js pada file book.controller.js
+
+   ```javascript
+   const Book = require('../models/book.model');
+   ```
+
+   <p align="center">
+      <img src="pic/ss7-02.png" width=400></img><br>
+      <i>Gambar 7.2: Mengimport model pada controller</i>
+   </p>
+
+3. Lakukan perubahan pada fungsi createBook
+   ```javascript
+   async function createBook(req, res) {
+      const book = new Book({
+         title: req.body.title,
+         author: req.body.author,
+         year: req.body.year,
+         pages: req.body.pages,
+         summary: req.body.summary,
+         publisher: req.body.publisher,
+      })
+      try {
+         const savedBook = await book.save();
+         res.status(200).json({
+            message: 'membuat buku baru',
+            book: savedBook,
+         })
+      } catch (error) {
+         res.status(500).json({
+            message: 'kesalahan pada server',
+            error: error.message,
+         })
+      }
+   }
+   ...
+   ```
+
+   <p align="center">
+      <img src="pic/ss7-03.png" width=500></img><br>
+      <i>Gambar 7.3: Mengubah kode pada controller untuk menambahkan data buku baru ke mongoDB</i>
+   </p>
+
+4. Buatlah dua buah buku dengan data di bawah ini dengan Postman
+   ```JSON
+   {
+      "title": "Dilan 1990",
+      "author": "Pidi Baiq",
+      "year": 2014,
+      "pages": 332,
+      "summary": "Mirea, anata wa utsukushī",
+      "publisher": "Pastel Books"
+   }
+   ```
+   ```JSON
+   {
+      "title": "Dilan 1991",
+      "author": "Pidi Baiq",
+      "year": 2015,
+      "pages": 344,
+      "summary": "Watashi ga kare o aishite iru to ittara",
+      "publisher": "Pastel Books"
+   }
+   ```
+
+   <p align="center">
+      <img src="pic/ss7-04-1.png" width=500></img><br>
+      <i>Gambar 7.4: Menambahkan data buku pertama dengan Postman</i>
+   </p>
+
+   <p align="center">
+      <img src="pic/ss7-04-2.png" width=500></img><br>
+      <i>Gambar 7.5: Menambahkan data buku kedua dengan Postman</i>
+   </p>
+
+   <p align="center">
+      <img src="pic/ss7-04-3.png" width=500></img><br>
+      <i>Gambar 7.6: Hasil penambahan data pada mongoDB</i>
+   </p>
+
+5. Lakukan perubahan pada fungsi getAllBooks
+   ```javascript
+   async function getAllBooks(req, res) {
+      try {
+         const books = await Book.find();
+         res.status(200).json({
+            message: 'mendapatkan semua buku',
+            books,
+         })
+      } catch (error) {
+         res.status(500).json({
+            message: 'kesalahan pada server',
+            error: error.message,
+         })
+      }
+   }
+   ...
+   ```
+
+   <p align="center">
+      <img src="pic/ss7-05.png" width=500></img><br>
+      <i>Gambar 7.7: Mengubah kode untuk melihat semua data buku</i>
+   </p>
+
+6. Lakukan perubahan pada fungsi getOneBook
+   ```javascript
+   async function getOneBook(req, res) {
+      const id = req.params.id;
+      try {
+         const book = await Book.findById(id);
+         res.status(200).json({
+            message: 'mendapatkan satu buku',
+            book,
+         })
+      } catch (error) {
+         res.status(500).json({
+            message: 'kesalahan pada server',
+            error: error.message,
+         })
+      }
+   }
+   ...
+   ```
+
+   <p align="center">
+      <img src="pic/ss7-06.png" width=500></img><br>
+      <i>Gambar 7.8: Mengubah kode untuk melihat data buku berdasarkan IDnya</i>
+   </p>
+
+7. Tampilkan semua buku dengan Postman
+
+   <p align="center">
+      <img src="pic/ss7-07.png" width=500></img><br>
+      <i>Gambar 7.9: Mendapatkan data semua buku lewat Postman</i>
+   </p>
+
+8. Tampilkan buku Dilan 1990 dengan Postman
+
+   <p align="center">
+      <img src="pic/ss7-08.png" width=500></img><br>
+      <i>Gambar 7.10: Mendapatkan data buku Dillan 1990 (id <code>6511420120be8db40efdc743</code>) dengan Postman</i>
+   </p>
+
+9. Lakukan perubahan pada fungsi updateBook
+   ```javascript
+   async function updateBook(req, res) {
+      const id = req.params.id;
+      try {
+         const book = await Book.findByIdAndUpdate(
+            id, req.body, { new: true }
+         )
+         res.status(200).json({
+            message: 'memperbaharui satu buku',
+            book,
+         })
+      } catch (error) {
+         res.status(500).json({
+            message: 'kesalahan pada server',
+            error: error.message,
+         })
+      }
+   }
+   ...
+   ```
+
+   <p align="center">
+      <img src="pic/ss7-09.png" width=500></img><br>
+      <i>Gambar 7.11: Mengubah kode untuk mengupdate buku berdasarkan IDnya</i>
+   </p>
+
+10. Ubah judul buku Dilan 1991 menjadi "\<NAMA PANGGILAN\> 1991" dengan Postman
+
+   <p align="center">
+      <img src="pic/ss7-10.png" width=500></img><br>
+      <i>Gambar 7.12: Mengubah judul buku pada buku Dilan 1991 (id <code>6511424020be8db40efdc745</code>)</i>
+   </p>
+
+11. Lakukan perubahan pada fungsi deleteBook
+   ```javascript
+   async function deleteBook(req, res) {
+      const id = req.params.id;
+      try {
+         const book = await Book.findByIdAndDelete(id);
+         res.status(200).json({
+            message: 'menghapus satu buku',
+            book,
+         })
+      } catch (error) {
+         res.status(500).json({
+            message: 'kesalahan pada server',
+            error: error.message,
+         })
+      }
+   }
+   ...
+   ```
+
+   <p align="center">
+      <img src="pic/ss7-11.png" width=500></img><br>
+      <i>Gambar 7.13: Mengubah kode untuk emnghapus buku berdasarkan IDnya</i>
+   </p>
+
+12. Hapus buku Dilan 1990 dengan Postman
+
+   <p align="center">
+      <img src="pic/ss7-12.png" width=500></img><br>
+      <i>Gambar 7.14: Menghapus buku Dilan 1990 (id <code>6511420120be8db40efdc743</code>) dengan Postman</i>
+   </p>
