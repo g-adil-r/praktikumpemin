@@ -360,3 +360,51 @@
       <img src="pic/ss5-07.png" width=500></img><br>
       <i>Gambar 5.7: Menguji ulang endpoint dengan Postman</i>
    </p>
+
+## Pembuatan model
+1. Lakukan pembuatan direktori models di tingkat yang sama dengan index.js
+
+   <p align="center">
+      <img src="pic/ss6-01.png" width=250></img><br>
+      <i>Gambar 6.1: Membuat folder models</i>
+   </p>
+
+2. Buatlah file book.model.js di dalamnya
+
+   <p align="center">
+      <img src="pic/ss6-02.png" width=250></img><br>
+      <i>Gambar 6.2: Membuat file book.model.js di dalam folder models</i>
+   </p>
+
+3. Tambahkan baris kode berikut sesuai dengan tabel di atas
+   ```javascript
+   const mongoose = require('mongoose');
+
+   const bookSchema = new mongoose.Schema({
+      title: {
+         type: String
+      },
+      author: {
+         type: String
+      },
+      year: {
+         type: Number
+      },
+      pages: {
+         type: Number
+      },
+      summary: {
+         type: String
+      },
+      publisher: {
+         type: String
+      }
+   })
+
+   module.exports = mongoose.model('book', bookSchema);
+   ```
+
+   <p align="center">
+      <img src="pic/ss6-03.png" width=400></img><br>
+      <i>Gambar 6.3: Membuat model untuk book pada file book.model.js</i>
+   </p>
