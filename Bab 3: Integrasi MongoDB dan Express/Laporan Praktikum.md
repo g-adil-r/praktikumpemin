@@ -12,6 +12,7 @@
       <i>Gambar 1.1: Hasil command <code>node -v</code> </i>
    </p>
 
+---------------
 ## Inisiasi project Express dan pemasangan package
 1. Lakukan pembuatan folder dengan nama express-mongodb dan masuk ke dalam folder tersebut lalu buka melalui text editor masing-masing
    <p align="center">
@@ -34,23 +35,25 @@
 ## Koneksi Express ke MongoDB
 1. Buatlah file index.js pada root folder dan masukkan kode di bawah ini
    
-       require('dotenv').config();
-       const express = require('express');
-       const mongoose = require('mongoose');
+   ```javascript
+   require('dotenv').config();
+   const express = require('express');
+   const mongoose = require('mongoose');
 
-       const app = express();
+   const app = express();
 
-       app.use(express.json());
-       app.get('/', (req, res) => {
-           res.status(200).json({
-               message: '\<nama\>,\<nim\>'
-           })
-       })
+   app.use(express.json());
+   app.get('/', (req, res) => {
+      res.status(200).json({
+         message: '<nama>,<nim>'
+      })
+   })
 
-       const PORT = 8000;
-       app.listen(PORT, () => {
-           console.log(`Running on port ${PORT}`);
-       })
+   const PORT = 8000;
+   app.listen(PORT, () => {
+      console.log(`Running on port ${PORT}`);
+   })
+   ```
    
    Setelah itu coba jalankan aplikasi dengan command `node index.js`
    <p align="center">
@@ -62,15 +65,59 @@
 
        PORT=5000
    
-   Setelah itu ubahlah kode pada listening port menjadi berikut dan coba jalankan aplikasi kembali
-
-       ...
-       const PORT = process.env.PORT || 8000;
-       app.listen(PORT, () => {
-           console.log(`Running on port ${PORT}`);
-       })
    <p align="center">
-      <img src="pic/ss3-02.png" width=600></img><br>
-      <i>Gambar 3.2: Menambahkan file .env untuk konfigurasi nomor port</i>
+      <img src="pic/ss3-02-1.png" width=400></img><br>
+      <i>Gambar 3.2: Menambahkan file .env dan menambahkan nomor port</i>
    </p>
 
+   Setelah itu ubahlah kode pada listening port menjadi berikut dan coba jalankan aplikasi kembali
+
+   ```javascript
+   ...
+   const PORT = process.env.PORT || 8000;
+   app.listen(PORT, () => {
+      console.log(`Running on port ${PORT}`);
+   })
+   ```
+
+   <p align="center">
+      <img src="pic/ss3-02-2.png" width=600></img><br>
+      <i>Gambar 3.3: Menggunakan file .env untuk nomor port</i>
+   </p>
+
+3. Copy connection string yang terdapat pada compas atau atlas dan paste kan pada .env seperti berikut
+
+       MONGO_URI=<Connection string masing-masing>
+
+   <p align="center">
+      <img src="pic/ss3-03.png" width=400></img><br>
+      <i>Gambar 3.4: Menambahkan connection string pada file .env</i>
+   </p>
+
+4. Tambahkan baris kode berikut pada file index.js
+
+   ```javascript
+   require('dotenv').config();
+   const express = require('express');
+   const mongoose = require('mongoose');
+   
+   mongoose.connect(process.env.MONGO_URI);
+   const db = mongoose.connection;
+   
+   db.on('error', (error) => {
+   console.log(error);
+   });
+   
+   db.once('connected', () => {
+   console.log('Mongo connected');
+   })
+
+   ...
+   ```
+   
+   Setelah itu coba jalankan aplikasi kembali
+
+   <p align="center">
+      <img src="pic/ss3-04.png" width=600></img><br>
+      <i>Gambar 3.5: Menambahkan kode untuk koneksi ke database mongoDB</i>
+   </p>
