@@ -2,6 +2,7 @@
 **Oleh Ghifari Adil Ruchiyat - 215150701111003**
 
 1. **Dynamic Route**
+
     Dynamic route adalah route yang dapat berubah-ubah, contohnya pada saat kita membuka suatu halaman web, kadang kita melihat /users/1 atau /users/2 , hal ini yang dinamakan dynamic routes.
     
     Untuk menambahkan dynamic routes pada aplikasi lumen kita, kita dapat menggunakan syntax berikut,
@@ -49,7 +50,7 @@
     ```
 
     <p align="center">
-       <img src="pic/ss1-05.png" width=600></img><br>
+       <img src="pic/ss1-05.png" width=500></img><br>
        <i>Gambar 1.5: Contoh kode dynamic route dengan optional routes</i>
     </p>
 
@@ -64,6 +65,7 @@
     </p>
 
 2. **Aliases Route**
+
     Aliases Route digunakan untuk memberi nama pada route yang telah kita buat, hal ini dapat membantu kita, saat kita ingin memanggil route tersebut pada aplikasi kita. Berikut syntax untuk menambahkan aliases route
 
     ```php
@@ -77,11 +79,34 @@
     ```
 
     <p align="center">
-       <img src="pic/ss2-01.png" width=600></img><br>
+       <img src="pic/ss2-01.png" width=500></img><br>
        <i>Gambar 1.8: Contoh kode menggunakan aliases route</i>
     </p>
 
     <p align="center">
-       <img src="pic/ss2-02.png" width=500></img><br>
+       <img src="pic/ss2-02.png" width=600></img><br>
        <i>Gambar 1.9: Hasil request menggunakan aliases route</i>
     </p>
+
+3. **Group Route**
+
+    Pada lumen, kita juga dapat memberikan grouping pada routes kita agar lebih mudah pada saat penulisan route pada web.php kita. Kita dapat melakukan grouping dengan menggunakan syntax berikut,
+
+    ```php
+    $router->group(['prefix' => 'users'], function () use ($router) {\
+        $router->get('/', function () { // menjadi /users/, /users => prefix, / => path
+            return "GET /users";
+        });
+    });
+    ```
+    <p align="center">
+       <img src="pic/ss3-01.png" width=500></img><br>
+       <i>Gambar 1.10: Contoh kode menggunakan group route</i>
+    </p>
+
+    <p align="center">
+       <img src="pic/ss3-02.png" width=600></img><br>
+       <i>Gambar 1.11: Hasil request setelah menambahkan group route</i>
+    </p>
+
+    Selain dapat mengelompokkan prefix, kita juga dapat mengelompokkan middleware dan namespace pada kelompok routes kita.
