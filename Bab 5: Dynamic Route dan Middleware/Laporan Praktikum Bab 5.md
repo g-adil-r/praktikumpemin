@@ -196,5 +196,5 @@
 
     <p align="center">
        <img src="pic/ss4-05.png" width=600></img><br>
-       <i>Gambar 1.15: Mengakses endpoint <code>/admin/home</code> dengan parameter age = 20</i>
+       <i>Gambar 1.16: Mengakses endpoint <code>/admin/home</code> dengan parameter age = 20</i>
     </p>
