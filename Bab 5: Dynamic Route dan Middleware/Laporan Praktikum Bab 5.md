@@ -14,7 +14,7 @@
 
     <p align="center">
        <img src="pic/ss1-01.png" width=500></img><br>
-       <i>Gambar 1.1: Membuat dynamic route </i>
+       <i>Gambar 1.1: Contok kode dynamic route </i>
     </p>
 
     <p align="center">
@@ -32,7 +32,7 @@
 
     <p align="center">
        <img src="pic/ss1-03.png" width=600></img><br>
-       <i>Gambar 1.3: Membuat dynamic route dengan banyak parameter </i>
+       <i>Gambar 1.3: Contoh kode dynamic route dengan banyak parameter </i>
     </p>
 
     <p align="center">
@@ -50,7 +50,7 @@
 
     <p align="center">
        <img src="pic/ss1-05.png" width=600></img><br>
-       <i>Gambar 1.5: Membuat dynamic route dengan optional routes</i>
+       <i>Gambar 1.5: Contoh kode dynamic route dengan optional routes</i>
     </p>
 
     <p align="center">
@@ -61,4 +61,27 @@
     <p align="center">
        <img src="pic/ss1-07.png" width=500></img><br>
        <i>Gambar 1.7: Hasil request endpoint <code>/users/123</code> menggunakan optional routes</i>
+    </p>
+
+2. **Aliases Route**
+    Aliases Route digunakan untuk memberi nama pada route yang telah kita buat, hal ini dapat membantu kita, saat kita ingin memanggil route tersebut pada aplikasi kita. Berikut syntax untuk menambahkan aliases route
+
+    ```php
+    $router->get('/auth/login', ['as' => 'route.auth.login', function (...) {...}])
+    ...
+    $router->get('/profile', function (Request $request) {
+        if ($request->isLoggedIn) {
+            return redirect()->route('route.auth.login');
+        }
+    });
+    ```
+
+    <p align="center">
+       <img src="pic/ss2-01.png" width=600></img><br>
+       <i>Gambar 1.8: Contoh kode menggunakan aliases route</i>
+    </p>
+
+    <p align="center">
+       <img src="pic/ss2-02.png" width=500></img><br>
+       <i>Gambar 1.9: Hasil request menggunakan aliases route</i>
     </p>
