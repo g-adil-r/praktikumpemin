@@ -87,7 +87,7 @@
        <i>Gambar 2.1: Membuat controller baru bernama HomeController</i>
     </p>
 
-2. Ubah route / pada file `routes/web.php` menjadi seperti ini
+2. Ubah route `/` pada file `routes/web.php` menjadi seperti ini
 
     ```php
     # Sebelum,
@@ -106,8 +106,67 @@
 3. Jalankan aplikasi
 
     <p align="center">
-       <img src="pic/ss2-03.png" width=400></img><br>
+       <img src="pic/ss2-03.png" width=300></img><br>
        <i>Gambar 2.3: Menjalankan aplikasi lumenapi</i>
     </p>
 
 ---
+## Request Handler
+1. Lakukan import library Request dengan menambahkan baris berikut di bagian atas file
+
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+    // Import Library Request
+    use Illuminate\Http\Request;
+    ```
+
+    <p align="center">
+       <img src="pic/ss3-01.png" width=300></img><br>
+       <i>Gambar 3.1: Import library request pada HomeController</i>
+    </p>
+
+2. Ubah fungsi index menjadi
+
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;
+
+    class HomeController extends Controller
+    {
+        /**
+         * Create a new controller instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            //
+        }
+
+        // Perubahan fungsi index
+        public function index (Request $request)
+        {
+            return 'Hello, from lumen! We got your request from endpoint: ' . $request->path();
+        }
+        // Perubahan fungsi index
+        
+        //
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss3-02.png" width=600></img><br>
+       <i>Gambar 3.2: Mengubah fungsi <code>index()</code> pada HomeController</i>
+    </p>
+
+3. Jalankan aplikasi
+
+    <p align="center">
+       <img src="pic/ss3-03.png" width=300></img><br>
+       <i>Gambar 3.3: Menjalan aplikasi lumenapi setelah mengubah fungsi <code>index()</code> pada HomeController</i>
+    </p>
