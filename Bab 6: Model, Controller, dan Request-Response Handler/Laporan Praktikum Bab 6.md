@@ -14,7 +14,7 @@
 
     <p align="center">
        <img src="pic/ss1-01.png" width=400></img><br>
-       <i>Gambar 1.1: Gambar kolom pada tabel user</i>
+       <i>Gambar 1.1: Nama-nama kolom yang terdapat pada tabel user</i>
     </p>
 
 2. Bersihkan isi `User.php` yang ada sebelumnya dan isi dengan baris kode berikut
@@ -100,7 +100,7 @@
 
     <p align="center">
        <img src="pic/ss2-02.png" width=400></img><br>
-       <i>Gambar 2.2: Mengganti route untuk endpoint <code>/</code> sehingga menggunakan HomeController</i>
+       <i>Gambar 2.2: Memodifikasi route <code>/</code> sehingga menggunakan HomeController</i>
     </p>
 
 3. Jalankan aplikasi
@@ -124,7 +124,7 @@
 
     <p align="center">
        <img src="pic/ss3-01.png" width=300></img><br>
-       <i>Gambar 3.1: Import library request pada HomeController</i>
+       <i>Gambar 3.1: Import library Request pada HomeController</i>
     </p>
 
 2. Ubah fungsi index menjadi
@@ -169,4 +169,91 @@
     <p align="center">
        <img src="pic/ss3-03.png" width=300></img><br>
        <i>Gambar 3.3: Menjalan aplikasi lumenapi setelah mengubah fungsi <code>index()</code> pada HomeController</i>
+    </p>
+
+---
+## Response Handler
+
+1. Lakukan import library Response dengan menambahkan baris berikut di bagian atas file
+
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response; // import library Response
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-01.png" width=350></img><br>
+       <i>Gambar 4.1: Import library Response pada HomeController</i>
+    </p>
+
+2. Buatlah fungsi hello() yang berisi
+
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
+
+    class HomeController extends Controller
+    {
+        /**
+         * Create a new controller instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            //
+        }
+
+        public function index (Request $request)
+        {
+        return 'Hello, from lumen! We got your request from endpoint: ' . $request->path();
+        }
+
+        //
+
+        // Pembuatan fungsi hello
+        public function hello()
+        {
+            $data['status'] = 'Success';
+            $data['message'] = 'Hello, from lumen!';
+            return (new Response($data, 201))
+                ->header('Content-Type', 'application/json');
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-02.png" width=450></img><br>
+       <i>Gambar 4.2: Menambahkan fungsi <code>hello()</code> pada HomeController</i>
+    </p>
+
+3. Tambahkan route `/hello` pada file routes/web.php
+
+    ```php
+    <?php
+
+    ...
+
+    $router->get('/', ['uses' => 'HomeController@index']);
+    $router->get('/hello', ['uses' => 'HomeController@hello']); // route hello
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-03.png" width=450></img><br>
+       <i>Gambar 4.3: Menambahkan route <code>/hello</code> pada route</i>
+    </p>
+
+4. Jalankan aplikasi pada route `/hello`
+
+    <p align="center">
+       <img src="pic/ss4-04.png" width=300></img><br>
+       <i>Gambar 4.4: Menjalankan aplikasi lumenapi pada route <code>/hello</code></i>
     </p>
