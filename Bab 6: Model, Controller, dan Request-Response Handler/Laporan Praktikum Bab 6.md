@@ -5,12 +5,14 @@
 
 1. Pastikan terdapat tabel users yang dibuat menggunakan migration pada bab sebelumnya. Berikut informasi kolom yang harus ada
 
-    * id
-    * createdAt
-    * updatedAt
-    * name
-    * email
-    * password
+    |           |
+    |-----------|
+    | id        |
+    | createdAt |
+    | updatedAt |
+    | name      |
+    | email     |
+    | password  |
 
     <p align="center">
        <img src="pic/ss1-01.png" width=400></img><br>
@@ -256,4 +258,144 @@
     <p align="center">
        <img src="pic/ss4-04.png" width=300></img><br>
        <i>Gambar 4.4: Menjalankan aplikasi lumenapi pada route <code>/hello</code></i>
+    </p>
+
+---
+## Penerapan
+
+1. Lakukan import model User dengan menambahkan baris berikut di bagian atas file
+
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Models\User; // import model User
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
+    ```
+
+    <p align="center">
+       <img src="pic/ss5-01.png" width=250></img><br>
+       <i>Gambar 5.1: Import model User pada HomeController</i>
+    </p>
+
+2. Tambahkan ketiga fungsi berikut di `HomeController.php`
+
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Models\User; // import model User
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
+
+    class HomeController extends Controller
+    {
+        ...
+
+        // Tiga Fungsi
+        public function defaultUser()
+        {
+            $user = User::create([
+                'name' => 'Nahida',
+                'email' => 'nahida@akademiya.ac.id',
+                'password' => 'smol'
+            ]);
+
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'default user created',
+                'data' => [
+                    'user' => $user,
+                ]
+            ],200);
+        }
+
+        public function createUser(Request $request)
+        {
+            $name = $request->name;
+            $email = $request->email;
+            $password = $request->password;
+
+            $user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => $password
+            ]);
+
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'new user created',
+                'data' => [
+                    'user' => $user,
+                ]
+            ],200);
+        }
+
+        public function getUsers()
+        {
+            $users = User::all();
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'all users grabbed',
+                'data' => [
+                    'users' => $users,
+                ]
+            ],200);
+        }
+        // Tiga Fungsi
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss5-02-1.png" height=350></img> <img src="pic/ss5-02-2.png" height=350></img><br>
+       <i>Gambar 5.2: Menambahkan fungsi <code>defaultUser()</code>, <code>createUser()</code>, dan <code>getUser()</code> pada HomeController</i>
+    </p>
+
+3. Tambahkan ketiga route pada file `routes/web.php` menggunakan group route
+
+    ```php
+    $router->get('/', ['uses' => 'HomeController@index']);
+    $router->get('/hello', ['uses' => 'HomeController@hello']);
+
+    // Tiga Route
+    $router->group(['prefix' => 'users'], function () use ($router) {
+        $router->post('/default', ['uses' => 'HomeController@defaultUser']);
+        $router->post('/new', ['uses' => 'HomeController@createUser']);
+        $router->get('/all', ['uses' => 'HomeController@getUsers']);
+    });
+    ```
+
+    <p align="center">
+       <img src="pic/ss5-03.png" width=500></img><br>
+       <i>Gambar 5.3: Menambahkan route untuk user menggunakan group route</i>
+    </p>
+
+4. Jalankan aplikasi pada route `/users/default` menggunakan Postman
+
+    <p align="center">
+       <img src="pic/ss5-04.png" width=600></img><br>
+       <i>Gambar 5.4: Mengakses route <code>/users/default</code> menggunakan Thunder Client</i>
+    </p>
+
+5. Jalankan aplikasi pada route `/users/new` dengan mengisi body sebagai berikut
+
+    |          |                      |
+    |----------|----------------------|
+    | name     | Cyno                 |
+    | email    | cyno@akademiya.ac.id |
+    | password | mahamatra            |
+
+    <p align="center">
+       <img src="pic/ss5-05.png" width=600></img><br>
+       <i>Gambar 5.5: Mengakses route <code>/users/new</code> dan mengirim data menggunakan Thunder Client</i>
+    </p>
+
+6. Jalankan aplikasi pada route `/users/all`
+
+    <p align="center">
+       <img src="pic/ss5-06.png" width=500></img><br>
+       <i>Gambar 5.6: Mengakses route <code>/users/all</code> menggunakan Thunder Client</i>
     </p>
