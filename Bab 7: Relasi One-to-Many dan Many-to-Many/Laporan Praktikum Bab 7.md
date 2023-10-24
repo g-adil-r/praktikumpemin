@@ -1,4 +1,4 @@
-# **BAB 6: Relasi One-to-Many dan Many-to-Many**
+# **BAB 7: Relasi One-to-Many dan Many-to-Many**
 **Oleh Ghifari Adil Ruchiyat - 215150701111003**
 
 ## Pembuatan Tabel
@@ -204,4 +204,107 @@ Berikut adalah tabel yang akan digunakan pada percobaan ini
     <p align="center">
        <img src="pic/ss1-09.png" width=600></img><br>
        <i>Gambar 1.9: Melakukan migrasi tabel ke database</i>
+    </p>
+
+---
+## Pembuatan Model
+1. Buatlah file dengan nama Post.php dan isi dengan baris kode berikut
+
+    ```php
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Post extends Model
+    {
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var string[]
+         */
+        protected $fillable = [
+            'content'
+        ];
+
+        /**
+         * The attributes excluded from the model's JSON form.
+         *
+         * @var string[]
+         */
+        protected $hidden = [];
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss2-01.png" width=400></img><br>
+       <i>Gambar 2.1: Membuat model untuk post</i>
+    </p>
+
+2. Buatlah file dengan nama Comment.php dan isi dengan baris kode berikut
+
+    ```php
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Comment extends Model
+    {
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var string[]
+         */
+        protected $fillable = [
+            'review'
+        ];
+        
+        /**
+         * The attributes excluded from the model's JSON form.
+         *
+         * @var string[]
+         */
+        protected $hidden = [];
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss2-02.png" width=400></img><br>
+       <i>Gambar 2.2: Membuat model untuk comment</i>
+    </p>
+
+3. Buatlah file dengan nama Tag.php dan isi dengan baris kode berikut
+    ```php
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Tag extends Model
+    {
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var string[]
+         */
+        protected $fillable = [
+            'name'
+        ];
+        
+        /**
+         * The attributes excluded from the model's JSON form.
+         *
+         * @var string[]
+         */
+        protected $hidden = [];
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss2-03.png" width=400></img><br>
+       <i>Gambar 2.3: Membuat model untuk tag</i>
     </p>
