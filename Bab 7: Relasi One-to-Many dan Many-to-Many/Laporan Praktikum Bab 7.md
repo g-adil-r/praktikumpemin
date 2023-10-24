@@ -334,7 +334,7 @@ Berikut adalah tabel yang akan digunakan pada percobaan ini
 
     <p align="center">
        <img src="pic/ss3-01.png" width=400></img><br>
-       <i>Gambar 3.1: Menambahkan fungsi <code>comments()</code> pada file Post.php</i>
+       <i>Gambar 3.1: Menambahkan relasi hasMany pada post dengan fungsi <code>comments()</code> </i>
     </p>
 
 2. Tambahkan fungsi `post()` dan atribut `postId` pada `$fillable` pada file Comment.php
@@ -370,7 +370,7 @@ Berikut adalah tabel yang akan digunakan pada percobaan ini
 
     <p align="center">
        <img src="pic/ss3-02.png" width=400></img><br>
-       <i>Gambar 3.2: Menambahkan fungsi <code>post()</code> dan atribut pada <code>$fillable</code> pada file Comment.php</i>
+       <i>Gambar 3.2: Menambahkan relasi belongsTo pada comment dengan fungsi <code>post()</code> </i>
     </p>
 
 3. Buatlah file PostController.php dan isilah dengan baris kode berikut
@@ -431,7 +431,7 @@ Berikut adalah tabel yang akan digunakan pada percobaan ini
 
     <p align="center">
        <img src="pic/ss3-03.png" width=400></img><br>
-       <i>Gambar 3.3: Membuat file PostController.php</i>
+       <i>Gambar 3.3: Membuat file controller untuk post</i>
     </p>
 
 4. Buatlah file CommentController.php dan isilah dengan baris kode berikut
@@ -476,7 +476,7 @@ Berikut adalah tabel yang akan digunakan pada percobaan ini
 
     <p align="center">
        <img src="pic/ss3-04.png" width=400></img><br>
-       <i>Gambar 3.4: Membuat file CommentController.php</i>
+       <i>Gambar 3.4: Membuat file controller untuk comment</i>
     </p>
 
 5. Tambahkan baris berikut pada routes/web.php
@@ -519,4 +519,231 @@ Berikut adalah tabel yang akan digunakan pada percobaan ini
     <p align="center">
        <img src="pic/ss3-08.png" width=400></img><br>
        <i>Gambar 3.8: Menampilkan post dan comment yang sudah dibuat</i>
+    </p>
+
+---
+## Relasi Many-to-Many
+1. Tambahkan fungsi tags() pada file Post.php
+    ```php
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Post extends Model
+    {
+        ...
+
+        public function tags()
+        {
+            return $this->belongsToMany(Tag::class, 'post_tag', 'postId', 'tagId');
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-01.png" width=500></img><br>
+       <i>Gambar 4.1: Menambahkan relasi belongsToMany pada post dengan fungsi <code>tags()</code> </i>
+    </p>
+
+2. Tambahkan fungsi posts() pada file Tag.php
+    ```php
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Tag extends Model
+    {
+        ...
+
+        public function posts()
+        {
+            return $this->belongsToMany(Post::class, 'post_tag', 'tagId', 'postId');
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-02.png" width=600></img><br>
+       <i>Gambar 4.2: Menambahkan relasi belongsToMany pada tag dengan fungsi <code>posts()</code> </i>
+    </p>
+
+3. Buatlah file TagController.php dan isilah dengan baris kode berikut
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Models\Tag;
+    use Illuminate\Http\Request;
+
+    class TagController extends Controller
+    {
+        /**
+         * Create a new controller instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            //
+        }
+
+        //
+        public function createTag(Request $request)
+        {
+            $tag = Tag::create([
+                'name' => $request->name
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'New tag created',
+                'data' => [
+                    'tag' => $tag
+                ]
+            ]);
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-03.png" width=400></img><br>
+       <i>Gambar 4.3: Membuat file controller untuk tag</i>
+    </p>
+
+4. Tambahkan fungsi addTag dan response tags pada PostController.php
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Models\Post;
+    use Illuminate\Http\Request;
+
+    class PostController extends Controller
+    {
+        ...
+
+        public function getPostById(Request $request)
+        {
+            $post = Post::find($request->id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'All post grabbed',
+                'data' => [
+                    'post' => [
+                        'id' => $post->id,
+                        'content' => $post->content,
+                        'comments' => $post->comments,
+                        'tags' => $post->tags, //response tags
+                    ]
+                ]
+            ]);
+        }
+
+        public function addTag(Request $request)
+        {
+            $post = Post::find($request->id);
+
+            $post->tags()->attach($request->tagId);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Tag added to post',
+            ]);
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-04.png" width=400></img><br>
+       <i>Gambar 4.4: Menambahkan fungsi <code>addTag()</code> untuk menambahkan tag pada post</i>
+    </p>
+
+5. Tambahkan baris berikut pada routes/web.php
+    ```php
+    $router->group(['prefix' => 'posts'], function () use ($router) {
+        $router->post('/', ['uses' => 'PostController@createPost']);
+        $router->get('/{id}', ['uses' => 'PostController@getPostById']);
+        $router->put('/{id}/tag/{tagId}', ['uses' => 'PostController@getPostById']); //
+    });
+
+    ...
+
+    $router->group(['prefix' => 'tags'], function () use ($router) {
+        $router->post('/', ['uses' => 'TagController@createTag']);
+    });
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-05.png" width=400></img><br>
+       <i>Gambar 4.5: Menambahkan route untuk tag</i>
+    </p>
+
+6. Buatlah satu tag menggunakan Postman
+
+    <p align="center">
+       <img src="pic/ss4-06.png" width=400></img><br>
+       <i>Gambar 4.6: Membuat tag menggunakan Thunder client</i>
+    </p>
+
+7. Tambahkan tag "jadul" pada post "disana engkau berdua"
+    
+    <p align="center">
+       <img src="pic/ss4-07.png" width=400></img><br>
+       <i>Gambar 4.7: Menambahkan tag "jadul" pada salah satu post</i>
+    </p>
+
+8. Tampilkan post "disana engkau berdua" menggunakan Postman
+
+    <p align="center">
+       <img src="pic/ss4-08.png" width=400></img><br>
+       <i>Gambar 4.8: Menampilkan salah satu post dengan tagnya</i>
+    </p>
+
+9. Buatlah postingan "tanpamu apa artinya" menggunakan Postman
+
+    <p align="center">
+       <img src="pic/ss4-09.png" width=400></img><br>
+       <i>Gambar 4.9: Membuat post kedua</i>
+    </p>
+
+10. Tambahkan tag "jadul" pada postingan "tanpamu apa artinya"
+
+    <p align="center">
+       <img src="pic/ss4-10.png" width=400></img><br>
+       <i>Gambar 4.10: Menambahkan tag "jadul" pada post kedua</i>
+    </p>
+
+11. Buatlah tag "lagu" menggunakan Postman
+
+    <p align="center">
+       <img src="pic/ss4-11.png" width=400></img><br>
+       <i>Gambar 4.11: Membuat tag baru dengan Thunder Client</i>
+    </p>
+
+12. Tambahkan tag "lagu" pada postingan "tanpamu apa artinya"
+
+    <p align="center">
+       <img src="pic/ss4-12.png" width=400></img><br>
+       <i>Gambar 4.12: Menambahkan tag "lagu" pada post kedua</i>
+    </p>
+
+13. Tampilkan post pertama
+
+    <p align="center">
+       <img src="pic/ss4-13.png" width=500></img><br>
+       <i>Gambar 4.13: Menampilkan post pertama dengan tagnya</i>
+    </p>
+
+14. Tampilkan post kedua
+
+    <p align="center">
+       <img src="pic/ss4-14.png" width=500></img><br>
+       <i>Gambar 4.14: Menampilkan post kedua dengan tagnya</i>
     </p>
