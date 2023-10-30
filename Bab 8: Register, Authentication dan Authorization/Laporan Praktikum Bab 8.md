@@ -4,13 +4,13 @@
 ## Register
 1. Pastikan terdapat tabel users yang dibuat menggunakan migration pada bab 3 Basic Routing dan Migration. Berikut informasi kolom yang harus ada:
 
-    |              |
-    |-----|
-    | id                |
-    | createdAt  |
-    | updatedAt  |
-    | name  |
-    | email  |
+    |           |
+    |-----------|
+    | id        |
+    | createdAt |
+    | updatedAt |
+    | name      |
+    | email     |
     | password  |
 
     <p align="center">
@@ -53,6 +53,7 @@
     </p>
 
 3. Buatlah file AuthController.php dan isilah dengan baris kode berikut
+
     ```php
     <?php
 
@@ -131,6 +132,100 @@
     ```
 
     <p align="center">
-       <img src="pic/ss1-05.png" width=450></img><br>
+       <img src="pic/ss1-05.png" width=500></img><br>
        <i>Gambar 1.5: Melakukan registrasi user baru dengan endpoint <code>/auth/register</code> </i>
+    </p>
+
+---
+
+## Authentication
+1. Buatlah fungsi `login(Request $request)` pada file AuthController.php
+
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Models\User;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Hash;
+
+    class AuthController extends Controller
+    {
+        ...
+
+        public function login(Request $request)
+        {
+            $email = $request->email;
+            $password = $request->password;
+
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'status' => 'Error',
+                    'message' => 'user not exist',
+                ],404);
+            }
+
+            if (!Hash::check($password, $user->password)) {
+                return response()->json([
+                    'status' => 'Error',
+                    'message' => 'wrong password',
+                ],400);
+            }
+
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'successfully login',
+                'data' => [
+                    'user' => $user,
+                ]
+            ],200);
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss2-01.png" width=450></img><br>
+       <i>Gambar 2.1: Menambahkan fungsi login pada AuthController</i>
+    </p>
+
+2. Tambahkan baris berikut pada routes/web.php
+
+    ```php
+    <?php
+
+    ...
+
+    $router->group(['prefix' => 'auth'], function () use ($router) {
+        $router->post('/register', ['uses'=> 'AuthController@register']);
+        $router->post('/login', ['uses'=> 'AuthController@login']); // route login
+    });
+    ```
+
+    <p align="center">
+       <img src="pic/ss2-02.png" width=450></img><br>
+       <i>Gambar 2.2: Menambahkan endpoint baru untuk login </i>
+    </p>
+
+3. Jalankan aplikasi pada endpoint /auth/login dengan body berikut
+
+    ```JSON
+    {
+        "email": "scaramouche@fatui.org",
+        "password": "wanderer"
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss2-03.png" width=450></img><br>
+       <i>Gambar 2.3: Melakukan login dengan endpoint <code>/auth/login</code> </i>
+    </p>
+
+4. Lakukan percobaan dengan menyalahkan email atau password dan amati responnya.
+
+    <p align="center">
+       <img src="pic/ss2-04.png" width=400></img><br>
+       <i>Gambar 2.4: Melakukan login dengan kredensial yang salah </i>
     </p>
