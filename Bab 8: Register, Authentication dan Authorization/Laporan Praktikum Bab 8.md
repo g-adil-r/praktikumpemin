@@ -400,3 +400,135 @@
        <img src="pic/ss3-06.png" width=500></img><br>
        <i>Gambar 3.6: Melakukan login dan mendapatkan token</i>
     </p>
+
+---
+## Authorization
+1. Buatlah file Authorization.php pada folder App/Http/Middleware dan isilah dengan baris berikut
+
+    ```php
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use App\Models\User;
+    use Closure;
+
+    class Authorization
+    {
+        /**
+         * Handle an incoming request.
+         *
+         * @param \Illuminate\Http\Request $request
+         * @param \Closure $next
+         * @return mixed
+         */
+        public function handle($request, Closure $next)
+        {
+            $token = $request->header('token') ?? $request->query('token');
+            if (!$token) {
+                return response()->json([
+                    'status' => 'Error',
+                    'message' => 'token not provided',
+                ],400);
+            }
+
+            $user = User::where('token', $token)->first();
+            if (!$user) {
+                return response()->json([
+                    'status' => 'Error',
+                    'message' => 'invalid token',
+                ],400);
+            }
+            $request->user = $user;
+            return $next($request);
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-01.png" width=450></img><br>
+       <i>Gambar 4.1: Membuat middleware baru untuk authorization </i>
+    </p>
+
+2. Tambahkan middleware yang baru dibuat pada bootstrap/app.php.
+
+    ```php
+    /*
+    |--------------------------------------------------------------------------
+    | Register Middleware
+    |--------------------------------------------------------------------------
+    |
+    | Next, we will register the middleware with the application. These can
+    | be global middleware that run before and after each request into a
+    | route or middleware that'll be assigned to some specific routes.
+    |
+    */
+
+    // $app->middleware([
+    //     App\Http\Middleware\ExampleMiddleware::class
+    // ]);
+
+    $app->routeMiddleware([
+        'auth' => App\Http\Middleware\Authorization::class, //
+    ]);
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-02.png" width=400></img><br>
+       <i>Gambar 4.2: Menambahkan middle authorization pada bootstrap/app.php</i>
+    </p>
+
+3. Buatlah fungsi home() pada HomeController.php
+    ```php
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Models\User; // import model User
+    use Illuminate\Http\Request;
+    use Illuminate\Http\Response;
+
+    class HomeController extends Controller
+    {
+        ...
+
+        public function home(Request $request)
+        {
+            $user = $request->user;
+
+            return response()->json([
+                'status' => 'Success',
+                'message' => 'selamat datang ' . $user->name,
+            ],200);
+        }
+    }
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-03.png" width=350></img><br>
+       <i>Gambar 4.3: Menambahkan fungsi home pada HomeController</i>
+    </p>
+
+4. Tambahkan baris berikut pada routes/web.php
+
+    ```php
+    <?php
+
+    $router->get('/', ['uses' => 'HomeController@index']);
+    $router->get('/hello', ['uses' => 'HomeController@hello']);
+    $router->get('/home', ['middleware' => 'auth','uses' => 'HomeController@home']); //
+
+    ...
+    ```
+
+    <p align="center">
+       <img src="pic/ss4-04.png" width=500></img><br>
+       <i>Gambar 4.4: Menambahkan endpoint <code>/home</code> menggunakan middleware authorization dan HomeController</i>
+    </p>
+
+5. Jalankan aplikasi pada endpoint /home dengan melampirkan nilai token yang didapat setelah login pada header
+
+    <p align="center">
+       <img src="pic/ss4-05.png" width=500></img><br>
+       <i>Gambar 4.5: Mengakses endpoint <code>/home</code> dengan menggunakan token</i>
+    </p>
