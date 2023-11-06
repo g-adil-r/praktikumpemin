@@ -348,13 +348,13 @@
     ```
 
     <p align="center">
-       <img src="pic/ss2-05.png" width=400></img><br>
+       <img src="pic/ss2-05.png" width=600></img><br>
        <i>Gambar 2.5: Melakukan login dan mendapatkan token</i>
     </p>
 
 6. Jalankan aplikasi pada endpoint /home dengan melampirkan nilai token yang didapat setelah login pada header
 
     <p align="center">
-       <img src="pic/ss2-06.png" width=400></img><br>
+       <img src="pic/ss2-06.png" width=600></img><br>
        <i>Gambar 2.6: Masuk ke endpoint home dengan menggunakan JWT</i>
     </p>
